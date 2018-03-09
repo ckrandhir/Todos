@@ -51,6 +51,33 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client) => {
     //  5aa2bc3e34bcd232a0a1979e
     //Update in user collection
 
+    // db.collection('User').findOneAndUpdate(
+
+
+    //     { _id: new ObjectID('5aa2bc3e34bcd232a0a1979e') },
+
+
+    //     {
+    //         $set: {
+    //             location: 'india'
+    //         }
+
+    //     },
+
+    //     {
+    //         returnOriginal: false
+
+    //     }
+
+    // ).then((result) => {
+    //     console.log(`Update document value: ${JSON.stringify(result.value)}`);
+
+
+    // });
+
+
+    //Update in user collection
+
     db.collection('User').findOneAndUpdate(
 
 
@@ -58,8 +85,8 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, client) => {
 
 
         {
-            $set: {
-                location: 'india'
+            $inc: {
+                age: 10
             }
 
         },
