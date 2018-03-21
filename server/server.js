@@ -2,7 +2,7 @@
  * @Author: Chandan Kumar 
  * @Date: 2018-03-21 11:07:43 
  * @Last Modified by: ckumar2@hallmark.com
- * @Last Modified time: 2018-03-21 13:31:23
+ * @Last Modified time: 2018-03-21 15:15:47
  */
 var { mongoose } = require('./db/mongoose');
 
@@ -14,7 +14,9 @@ var express = require('express');
 
 var bodyParser = require('body-parser');
 
+const { ObjectID } = require('mongodb');
 
+var id = '6ab2a1f41a06ad12b893824d';
 
 
 var app = express();
@@ -64,6 +66,56 @@ app.get('/todos', (req, res) => {
     })
 
 });
+
+//Get/todos/12345567
+
+app.get('/todos/:id', (req, res) => {
+    // console.log('ID :-' + req.params.id);
+
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+
+        return res.send({
+            error: 'NotValid'
+        });
+    };
+
+
+    Todo.findById(id).then((doc) => {
+
+        if (!doc) {
+
+            return res.send({
+
+                error: 'Id not found'
+            });
+        } else {
+            res.status.send(doc);
+        }
+
+    }).catch(() => {
+
+
+
+
+        res.send({
+
+
+            error: 'Error in processing'
+        });
+
+    })
+
+
+
+}, (e) => {
+
+    console.log('Error');
+
+
+})
+
 
 app.listen(3000, () => {
 
