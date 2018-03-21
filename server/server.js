@@ -2,7 +2,7 @@
  * @Author: Chandan Kumar 
  * @Date: 2018-03-21 11:07:43 
  * @Last Modified by: ckumar2@hallmark.com
- * @Last Modified time: 2018-03-21 15:15:47
+ * @Last Modified time: 2018-03-21 15:42:51
  */
 var { mongoose } = require('./db/mongoose');
 
@@ -15,6 +15,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 const { ObjectID } = require('mongodb');
+
+const _ = require('loadash');
 
 var id = '6ab2a1f41a06ad12b893824d';
 
@@ -67,6 +69,56 @@ app.get('/todos', (req, res) => {
 
 });
 
+
+
+app.delete('/todos/:id', (req, res) => {
+    // console.log('ID :-' + req.params.id);
+
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+
+        return res.send({
+            error: 'NotValid'
+        });
+    };
+
+
+    Todo.findByIdAndRemove(id).then((doc) => {
+
+        if (!doc) {
+
+            return res.send({
+
+                error: 'Id not found'
+            });
+        } else {
+            res.send(doc);
+        }
+
+    }).catch(() => {
+
+
+
+
+        res.send({
+
+
+            error: 'Error in processing'
+        });
+
+    })
+
+
+
+}, (e) => {
+
+    console.log('Error');
+
+
+});
+
+
 //Get/todos/12345567
 
 app.get('/todos/:id', (req, res) => {
@@ -91,7 +143,7 @@ app.get('/todos/:id', (req, res) => {
                 error: 'Id not found'
             });
         } else {
-            res.status.send(doc);
+            res.send(doc);
         }
 
     }).catch(() => {
@@ -114,7 +166,27 @@ app.get('/todos/:id', (req, res) => {
     console.log('Error');
 
 
+});
+
+
+//update
+
+app.patch('/todos/:id', (req, res) => {
+
+    var id = req.params.id;
+
+    var body = _.pick(req.body, ['text', 'complete'])
+
+    if (!ObjectID.isValid(id)) {
+
+        return res.send({
+            error: 'NotValid'
+        });
+    };
+
 })
+
+
 
 
 app.listen(3000, () => {
