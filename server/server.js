@@ -2,7 +2,7 @@
  * @Author: Chandan Kumar 
  * @Date: 2018-03-21 11:07:43 
  * @Last Modified by: ckumar2@hallmark.com
- * @Last Modified time: 2018-03-21 13:17:31
+ * @Last Modified time: 2018-03-21 13:31:23
  */
 var { mongoose } = require('./db/mongoose');
 
@@ -45,6 +45,25 @@ app.post('/todos', (req, res) => {
 
 
 //get
+
+app.get('/todos', (req, res) => {
+
+    Todo.find().then((doc) => {
+        res.send({
+
+            doc,
+            sttaus: 'pass'
+        });
+
+    }, (err) => {
+
+
+        res.status(400).send(e);
+        console.log('unable to find');
+
+    })
+
+});
 
 app.listen(3000, () => {
 
