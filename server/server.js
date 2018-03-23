@@ -2,7 +2,7 @@
  * @Author: Chandan Kumar 
  * @Date: 2018-03-21 11:07:43 
  * @Last Modified by: ckumar2@hallmark.com
- * @Last Modified time: 2018-03-21 15:42:51
+ * @Last Modified time: 2018-03-23 10:44:49
  */
 var { mongoose } = require('./db/mongoose');
 
@@ -16,7 +16,7 @@ var bodyParser = require('body-parser');
 
 const { ObjectID } = require('mongodb');
 
-const _ = require('loadash');
+const _ = require('lodash');
 
 var id = '6ab2a1f41a06ad12b893824d';
 
@@ -27,7 +27,7 @@ var app = express();
 //middleware
 app.use(bodyParser.json());
 
-//get post
+// post
 app.post('/todos', (req, res) => {
 
     console.log(req.body);
@@ -53,16 +53,13 @@ app.post('/todos', (req, res) => {
 app.get('/todos', (req, res) => {
 
     Todo.find().then((doc) => {
-        res.send({
+        res.send(doc);
 
-            doc,
-            sttaus: 'pass'
-        });
 
     }, (err) => {
 
 
-        res.status(400).send(e);
+        res.status(404).send(e);
         console.log('unable to find');
 
     })
@@ -175,16 +172,35 @@ app.patch('/todos/:id', (req, res) => {
 
     var id = req.params.id;
 
-    var body = _.pick(req.body, ['text', 'complete'])
 
-    if (!ObjectID.isValid(id)) {
+    var body = _.pick(req.body, ['text', 'completed'])
 
-        return res.send({
-            error: 'NotValid'
-        });
-    };
 
-})
+    if (_.isBoolean(body.completed) && body.completed) {
+        body.completedAt = new Date().getDate();
+        console.log(body.completed);
+        console.log(body.completedAt);
+
+
+    } else {
+        body.completed = false;
+        body.completedAt = null;
+        console.log('Hi');
+
+    }
+    console.log(body);
+
+    Todo.findOneAndUpdate(id, { $set: body }, { new: true }).then((todo) => {
+
+        if (!todo) {
+            res.status(404).send();
+        }
+        res.status(400).send({ todo });
+    }).catch((e) => {
+        res.status(404).send();
+
+    })
+});
 
 
 
