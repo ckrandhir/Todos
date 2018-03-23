@@ -2,7 +2,7 @@
  * @Author: Chandan Kumar 
  * @Date: 2018-03-21 11:16:48 
  * @Last Modified by: ckumar2@hallmark.com
- * @Last Modified time: 2018-03-21 15:33:03
+ * @Last Modified time: 2018-03-23 10:42:13
  */
 
 var mongoose = require('mongoose');
@@ -22,9 +22,10 @@ var Todo = mongoose.model('Todo', {
         default: false
 
     },
-    completeAt: {
+    completedAt: {
         type: Number,
         default: null
+
     }
 
 });

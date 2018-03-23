@@ -2,7 +2,7 @@
  * @Author: Chandan Kumar 
  * @Date: 2018-03-21 13:35:36 
  * @Last Modified by: ckumar2@hallmark.com
- * @Last Modified time: 2018-03-21 15:25:53
+ * @Last Modified time: 2018-03-21 16:46:35
  */
 const { mongoose } = require('./../server/db/mongoose');
 
@@ -30,6 +30,13 @@ Todo.remove({}).then(() => {
 //Find by Id and remove
 
 Todo.findByIdAndRemove().then((todo) => {
+
+    console.log(todo);
+
+});
+
+
+Todo.findOneAndRemove().then((todo) => {
 
     console.log(todo);
 
